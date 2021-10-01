@@ -3,17 +3,10 @@ import styled from 'styled-components';
 import { Text } from '.';
 
 const Button = (props) => {
-  const { margin, border, radius, padding, bg, text, onClick } = props;
-  const styles = {
-    margin,
-    border,
-    radius,
-    padding,
-    bg,
-  };
+  const { text, onClick } = props;
 
   return (
-    <ButtonBox {...styles} onClick={onClick}>
+    <ButtonBox onClick={onClick}>
       <Text color='#fefefe' bold>
         {text}
       </Text>
@@ -21,20 +14,11 @@ const Button = (props) => {
   );
 };
 
-Button.defaultProps = {
-  margin: false,
-  border: 'none',
-  radius: '0',
-  padding: false,
-  bg: '#ccc',
-};
-
 const ButtonBox = styled.button`
-  ${(props) => (props.margin ? `margin: ${props.margin};` : '')};
-  border: ${(props) => props.border};
-  ${(props) => (props.radius ? `border-radius: ${props.radius};` : '')};
-  ${(props) => (props.padding ? `padding: ${props.padding};` : '')};
-  background-color: ${(props) => props.bg};
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: salmon;
   cursor: pointer;
 `;
 

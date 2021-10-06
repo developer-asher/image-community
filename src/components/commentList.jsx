@@ -25,8 +25,8 @@ const CommentList = (props) => {
   return (
     <Grid>
       <CommentWrap>
-        {comment_list[post_id].map((comment) => {
-          return <CommentItem key={comment.post_id} {...comment} />;
+        {comment_list[post_id].map((comment, index) => {
+          return <CommentItem key={`comment_${index}`} {...comment} />;
         })}
       </CommentWrap>
     </Grid>

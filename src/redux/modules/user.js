@@ -53,15 +53,15 @@ const signupFB = (id, pwd, nick_name) => {
   return async function (dispatch, getState, { history }) {
     await auth
       .createUserWithEmailAndPassword(id, pwd)
-      .then(() => {
+      .then((user) => {
         auth.currentUser
           .updateProfile({
             displayName: nick_name,
           })
-          .then((user) => {
-            const uid = user.user._delegate.uid;
-
-            dispatch(setUser({ nick_name, id, user_profile: '', uid }));
+          .then(() => {
+            dispatch(
+              setUser({ nick_name, id, user_profile: '', uid: user.user.uid }),
+            );
             history.push('/');
           })
           .catch((error) => {

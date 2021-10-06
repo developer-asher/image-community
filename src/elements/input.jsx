@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const { type, placeholder, onChange, label, label_style } = props;
+  const { type, placeholder, onChange, label, label_style, onKeyPress } = props;
   const id = Date.now();
 
   return (
@@ -15,6 +15,7 @@ const Input = (props) => {
         id={id}
         placeholder={placeholder}
         onChange={onChange}
+        onKeyPress={onKeyPress}
       ></InputBox>
     </>
   );

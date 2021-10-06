@@ -38,6 +38,11 @@ const SignIn = (props) => {
             label='비밀번호'
             placeholder='Password'
             onChange={(e) => setPwd(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter' && id) {
+                login();
+              }
+            }}
           />
         </Grid>
       </Grid>

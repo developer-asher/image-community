@@ -36,8 +36,4 @@ const PostDetail = (props) => {
   );
 };
 
-const CommentWrap = styled.ul`
-  padding-left: 0;
-`;
-
 export default PostDetail;

@@ -23,18 +23,18 @@ const CommentList = (props) => {
   }
 
   return (
-    <List>
-      <Grid is_flex>
+    <Grid>
+      <CommentWrap>
         {comment_list[post_id].map((comment) => {
           return <CommentItem key={comment.post_id} {...comment} />;
         })}
-      </Grid>
-    </List>
+      </CommentWrap>
+    </Grid>
   );
 };
 
-const List = styled.li`
-  margin-top: 20px;
+const CommentWrap = styled.ul`
+  padding-left: 0;
 `;
 
 export default CommentList;

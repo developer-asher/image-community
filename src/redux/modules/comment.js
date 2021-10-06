@@ -2,8 +2,9 @@ import { createAction, handleActions } from 'redux-actions';
 import { produce } from 'immer';
 import moment from 'moment';
 
-import { firestore } from '../../shared/firebase';
+import { firestore, realtime } from '../../shared/firebase';
 import firebase from 'firebase/compat/app';
+import { actionCreators as postActions } from './post';
 
 const SET_COMMENT = 'SET_COMMENT';
 const ADD_COMMENT = 'ADD_COMMENT';
@@ -77,7 +78,44 @@ const addCommentFB = (post_id, contents) => {
           .then(() => {
             console.log('firebase: 댓글 갯수 업데이트 완료!');
 
-            if (post) dispatch(addComment(post_id, comment));
+            dispatch(addComment(post_id, comment));
+
+            if (post) {
+              dispatch(
+                postActions.editPost(post_id, {
+                  comment_cnt: parseInt(post.comment_cnt) + 1,
+                }),
+              );
+
+              const noti_item = realtime
+                .ref(`notice/${post.user_info.user_id}/list`)
+                .push();
+
+              noti_item.set(
+                {
+                  post_id: post_id,
+                  user_name: comment.user_name,
+                  image_url: post.image_url,
+                  insert_dt: comment.insert_dt,
+                },
+                (error) => {
+                  if (error) {
+                    console.log('알림 저장에 실파하였습니다.', error);
+                  } else {
+                    const notiDB = realtime.ref(
+                      `notice/${post.user_info.user_id}`,
+                    );
+
+                    if (user_info.uid !== post.user_info.user_id) {
+                      // 업데이트
+                      notiDB.update({ read: false });
+                    } else {
+                      notiDB.update({ read: true });
+                    }
+                  }
+                },
+              );
+            }
           })
           .catch((error) => {
             console.error(

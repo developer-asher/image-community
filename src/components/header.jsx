@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Grid, Image, Button } from '../elements/index';
 import { actionCreators as userActions } from '../redux/modules/user';
 import { history } from '../redux/configureStore';
+import NotiBadge from './notiBadge';
 
 const Header = (props) => {
   const dispatch = useDispatch();
@@ -45,10 +46,8 @@ const Header = (props) => {
         <ButtonWrap>
           <Button onClick={editUserInfo}>내정보</Button>
           <Grid margin='0 10px' position>
-            <Button onClick={goNotice}>알림</Button>
-            <NoticeCount>10</NoticeCount>
+            <NotiBadge onClick={goNotice} />
           </Grid>
-
           <Button onClick={signOut}>로그아웃</Button>
         </ButtonWrap>
       </Grid>
@@ -65,7 +64,7 @@ const Header = (props) => {
     >
       <Image />
       <ButtonWrap>
-        <Button onClick={goSignUp} margin='0 0 10px 0'>
+        <Button onClick={goSignUp} margin='0 10px 0 0'>
           회원가입
         </Button>
         <Button onClick={goSignIn}>로그인</Button>
@@ -78,10 +77,6 @@ const ButtonWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  }
-  &>button:first-child {
-    margin-right:10px;
-  }
 `;
 
 const NoticeCount = styled.span`

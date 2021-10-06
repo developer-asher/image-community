@@ -2,6 +2,7 @@ import firebase from 'firebase/compat/app'; // v9에서는 compat을 이용
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import 'firebase/compat/database';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyBLwlx9FmIB3xOQTfsBKfN-OVOuleJmt1k',
@@ -21,5 +22,6 @@ const apiKey = firebaseConfig.apiKey;
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 const storage = firebase.storage();
+const realtime = firebase.database();
 
-export { auth, apiKey, firestore, storage };
+export { auth, apiKey, firestore, storage, realtime };

@@ -6,14 +6,17 @@ const Image = (props) => {
   const styles = { src, size };
 
   if (shape === 'circle') {
-    return <CircleImg {...styles}></CircleImg>;
+    return <CircleImg {...styles} />;
   }
   if (shape === 'rectangle') {
     return (
       <Outter>
-        <InnerImg {...styles}></InnerImg>
+        <InnerImg {...styles} />
       </Outter>
     );
+  }
+  if (shape === 'basic') {
+    return <BasicImg {...styles} />;
   }
 
   return <></>;
@@ -30,10 +33,17 @@ const Outter = styled.div`
   min-width: 250px;
 `;
 
+const BasicImg = styled.div`
+  width: ${(props) => props.size};
+  height: ${(props) => props.size};
+  background: url('${(props) => props.src}') no-repeat center;
+  background-size: cover;
+`;
+
 const InnerImg = styled.div`
   position: relative;
   padding-top: 75%;
-  background: url('${(props) => props.src}') no-repeat center;
+  background: url('${(props) => props.src}') no-repeat top center;
   background-size: cover;
   overflow: hidden;
 `;

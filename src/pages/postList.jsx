@@ -36,10 +36,7 @@ const PostList = (props) => {
             post_list.map((post, index) => {
               if (post.user_info.user_id === user_info?.uid) {
                 return (
-                  <Grid
-                    key={post.id}
-                    onClick={(e) => history.push(`/detail/${post.id}`)}
-                  >
+                  <Grid key={post.id}>
                     <Post key={post.id} {...post} is_me />
                   </Grid>
                 );

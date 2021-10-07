@@ -1,14 +1,19 @@
 import React from 'react';
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import { Grid, Image, Text, Button } from '../elements/index';
 import { history } from '../redux/configureStore';
 
-const Post = (props) => {
+const Post = memo((props) => {
   const { user_info, id, contents, image_url, comment_cnt, insert_dt, is_me } =
     props;
 
   const editPost = () => {
     history.push(`/write/${id}`);
+  };
+
+  const goDetail = () => {
+    history.push(`/detail/${id}`);
   };
 
   return (
@@ -33,7 +38,7 @@ const Post = (props) => {
       <Grid padding='10px'>
         <Text>{contents}</Text>
       </Grid>
-      <Grid>
+      <Grid onClick={goDetail}>
         <Image shape='rectangle' src={image_url} />
       </Grid>
       <Grid padding='10px'>
@@ -41,7 +46,7 @@ const Post = (props) => {
       </Grid>
     </Grid>
   );
-};
+});
 
 Post.defaultProps = {
   id: 0,

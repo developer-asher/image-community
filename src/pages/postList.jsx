@@ -22,7 +22,7 @@ const PostList = (props) => {
 
   return (
     <>
-      <Grid padding='0 20px 20px 20px' bg='#eff6ff'>
+      <Grid padding='0 0 20px 0' bg='#eff6ff'>
         <InfinityScroll
           callNext={() => {
             console.log('next post');
@@ -42,10 +42,7 @@ const PostList = (props) => {
                 );
               } else {
                 return (
-                  <Grid
-                    key={post.id}
-                    onClick={() => history.push(`/detail/${post.id}`)}
-                  >
+                  <Grid key={post.id}>
                     <Post key={post.id} {...post} />
                   </Grid>
                 );

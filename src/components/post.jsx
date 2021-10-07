@@ -1,18 +1,25 @@
 import React from 'react';
 import { memo } from 'react';
 import { useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import { Grid, Image, Text, Button } from '../elements/index';
 import { history } from '../redux/configureStore';
 
 const Post = memo((props) => {
   const { user_info, id, contents, image_url, comment_cnt, insert_dt, is_me } =
     props;
+  const param = useParams();
 
   const editPost = () => {
     history.push(`/write/${id}`);
   };
 
   const goDetail = () => {
+    // 상세페이지에서는 클릭 이벤트 방지
+    if (param.id) {
+      return false;
+    }
+
     history.push(`/detail/${id}`);
   };
 
@@ -39,10 +46,12 @@ const Post = memo((props) => {
         <Text>{contents}</Text>
       </Grid>
       <Grid onClick={goDetail}>
-        <Image shape='rectangle' src={image_url} />
-      </Grid>
-      <Grid padding='10px'>
-        <Text>댓글{comment_cnt}개</Text>
+        <Grid>
+          <Image shape='rectangle' src={image_url} />
+        </Grid>
+        <Grid padding='10px'>
+          <Text>댓글{comment_cnt}개</Text>
+        </Grid>
       </Grid>
     </Grid>
   );

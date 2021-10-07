@@ -36,7 +36,7 @@ const loginFB = (id, pwd) => {
             dispatch(
               setUser({ nick_name: user_nickName, id, user_profile: '', uid }),
             );
-            history.push('/');
+            history.replace('/');
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -62,7 +62,7 @@ const signupFB = (id, pwd, nick_name) => {
             dispatch(
               setUser({ nick_name, id, user_profile: '', uid: user.user.uid }),
             );
-            history.push('/');
+            history.replace('/');
           })
           .catch((error) => {
             console.log(error);

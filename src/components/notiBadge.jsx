@@ -22,7 +22,7 @@ const NotiBadge = (props) => {
     // 리스너 구독 .on()
     notiDB.on('value', (snapshot) => {
       // 값이 바뀔 떄 실행시킬 구문
-      setIsRead(snapshot.val());
+      setIsRead(snapshot.val().read);
     });
 
     // 구독 취소 .off()

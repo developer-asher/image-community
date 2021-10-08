@@ -1,48 +1,67 @@
-import React, { useState } from 'react';
-import { Grid, Input, Text, Button } from '../elements/index';
+import React, { useState, useSelector } from 'react';
 import styled from 'styled-components';
-import Header from '../components/header';
+import { useDispatch } from 'react-redux';
+
+import { Grid, Input, Text, Button } from '../elements/index';
+import { actionCreators as userActions } from '../redux/modules/user';
+import { history } from '../redux/configureStore';
 
 const UserInfo = (props) => {
-  const [nickName, setNickName] = useState();
+  const dispatch = useDispatch();
+  const [nick_name, setNickName] = useState('');
+  // const user = useSelector();
 
-  const editNickName = () => {
-    console.log('닉네임 수정');
-  };
-
-  const getNickName = (e) => {
-    console.log(e.target.value);
+  const changeName = (e) => {
     setNickName(e.target.value);
   };
 
+  const editName = (e) => {
+    if (nick_name === '') {
+      alert('변경하실 닉네임을 작성해주세요.');
+      return false;
+    }
+    dispatch(userActions.updateUserFB(nick_name));
+    setNickName('');
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key !== 'Enter') {
+      return false;
+    }
+    editName();
+  };
+
+  const goHome = () => {
+    history.push('/');
+  };
+
   return (
-    <>
+    <Grid padding='20px' bg='#fff'>
       <Text size='30px' bold margin='0 0 30px 0'>
         내 정보 수정
       </Text>
       <Grid>
         <Grid margin='0 0 20px 0'>
           <Input //
-            value={nickName}
+            value={nick_name}
             label='닉네임'
-            placeholder='바꿀 닉네임을 입력하세요'
-            onChange={getNickName}
+            placeholder='닉네임을 입력하세요'
+            onChange={changeName}
+            onKeyPress={handleKeyPress}
           />
         </Grid>
       </Grid>
-      <div style={{ textAlign: 'center', marginTop: '40px' }}>
-        <Button text='내 정보 수정하기' onClick={editNickName}></Button>
-      </div>
-    </>
+      <ButtonWrap>
+        <Button onClick={editName}>내 정보 수정하기</Button>
+      </ButtonWrap>
+      <Button onClick={goHome}>홈으로 이동</Button>
+    </Grid>
   );
 };
 
-const Container = styled.div`
-  width: 50%;
-  margin: 40px auto;
-  border-radius: 10px;
-  padding: 30px;
-  box-shadow: 1px 1px 5px 1px #ccc;
+const ButtonWrap = styled.div`
+  text-align: center;
+  margin: 40px 0 20px 0;
 `;
 
 export default UserInfo;

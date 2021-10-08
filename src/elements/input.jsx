@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Input = (props) => {
-  const { type, placeholder, onChange, label, label_style, onKeyPress } = props;
+  const { type, placeholder, onChange, label, label_style, onKeyPress, value } =
+    props;
   const id = Date.now();
 
   return (
@@ -12,6 +13,7 @@ const Input = (props) => {
       </LabelBox>
       <InputBox
         type={type}
+        value={value}
         id={id}
         placeholder={placeholder}
         onChange={onChange}
@@ -23,6 +25,7 @@ const Input = (props) => {
 
 Input.defaultProps = {
   type: 'text',
+  value: '',
   placeholder: '',
   label_bg: 'transparent',
   label_alignX: 'left',

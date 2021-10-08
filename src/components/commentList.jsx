@@ -9,6 +9,7 @@ import { actionCreators as commentActions } from '../redux/modules/comment';
 const CommentList = (props) => {
   const { post_id } = props;
   const dispatch = useDispatch();
+  const user_info = useSelector((state) => state.user.user);
   const comment_list = useSelector((state) => state.comment.list); //각각의 포스트 전체 댓글
 
   useEffect(() => {
@@ -17,6 +18,10 @@ const CommentList = (props) => {
       dispatch(commentActions.getCommentFB(post_id));
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(commentActions.getCommentFB(post_id));
+  }, [user_info]);
 
   if (!comment_list[post_id] || !post_id) {
     return null;

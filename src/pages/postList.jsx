@@ -15,10 +15,8 @@ const PostList = (props) => {
   const { history } = props;
 
   useEffect(() => {
-    if (post_list.length < 2) {
-      dispatch(postActions.getPostFB());
-    }
-  }, []);
+    dispatch(postActions.getPostFB());
+  }, [user_info]);
 
   return (
     <>

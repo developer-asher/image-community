@@ -30,6 +30,7 @@ const PostWrite = (props) => {
   const changeContent = (e) => setContents(e.target.value);
   const addPost = () => dispatch(postActions.addPostFB(contents));
   const editPost = () => dispatch(postActions.editPostFB(post_id, contents));
+  const deletePost = () => dispatch(postActions.deletePostFB(post_id));
 
   // Lifecyle
   useEffect(() => {
@@ -67,7 +68,7 @@ const PostWrite = (props) => {
   }
 
   return (
-    <>
+    <Grid padding='20px' bg='#fff'>
       <Text size='30px' bold margin='0 0 30px 0'>
         {is_edit ? '게시글 수정' : '게시글 작성'}
       </Text>
@@ -94,15 +95,20 @@ const PostWrite = (props) => {
         />
       </Grid>
       {is_edit ? (
-        <Button width='100%' onClick={editPost}>
-          게시글 수정
-        </Button>
+        <Grid is_flex>
+          <Button width='48%' onClick={deletePost}>
+            게시글 삭제
+          </Button>
+          <Button width='48%' onClick={editPost}>
+            게시글 수정
+          </Button>
+        </Grid>
       ) : (
         <Button width='100%' onClick={addPost}>
           게시글 작성
         </Button>
       )}
-    </>
+    </Grid>
   );
 };
 

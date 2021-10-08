@@ -10,6 +10,7 @@ const SET_POST = 'SET_POST';
 const ADD_POST = 'ADD_POST';
 const EDIT_POST = 'EDIT_POST';
 const LOADING_POST = 'LOADING_POST';
+const DELETE_POST = 'DELETE_POST';
 
 const initialState = {
   list: [],
@@ -37,6 +38,7 @@ const editPost = createAction(EDIT_POST, (post_id, post) => ({
 const loadingPost = createAction(LOADING_POST, (loading_post) => ({
   loading_post,
 }));
+const deletePost = createAction(DELETE_POST, (post_list) => ({ post_list }));
 
 const addPostFB = (contents) => {
   return function (dispatch, getState, { history }) {
@@ -269,6 +271,31 @@ const getOnePostFB = (id) => {
   };
 };
 
+const deletePostFB = (post_id) => {
+  return function (dispatch, getState, { history }) {
+    const postDB = firestore.collection('post').doc(post_id);
+
+    const post_list = getState().post.list;
+    const sort_list = post_list.filter((list) => {
+      return list.id !== post_id;
+    });
+    console.log(post_id);
+    console.log(sort_list);
+
+    postDB
+      .delete()
+      .then(() => {
+        console.log('게시글을 삭제하는데 성공하였습니다.');
+
+        dispatch(deletePost(sort_list));
+        history.replace('/');
+      })
+      .catch((error) => {
+        console.error('게시글을 삭제하는데 실패하였습니다.', error);
+      });
+  };
+};
+
 export default handleActions(
   {
     [SET_POST]: (state, action) =>
@@ -311,6 +338,10 @@ export default handleActions(
       produce(state, (draft) => {
         draft.loading_post = action.payload.loading_post;
       }),
+    [DELETE_POST]: (state, action) =>
+      produce(state, (draft) => {
+        draft.list = action.payload.post_list;
+      }),
   },
   initialState,
 );
@@ -323,6 +354,7 @@ const actionCreators = {
   getOnePostFB,
   addPostFB,
   editPostFB,
+  deletePostFB,
 };
 
 export { actionCreators };

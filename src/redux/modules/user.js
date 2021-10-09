@@ -4,9 +4,6 @@ import firebase from 'firebase/compat/app'; // v9에서는 compat을 이용
 
 import { getCookie, setCookie, removeCookie } from '../../shared/cookie';
 import { firestore, auth, realtime } from '../../shared/firebase';
-import { alertTitleClasses } from '@mui/material';
-import { actionCreators as commentActions } from './comment';
-
 // action type
 const LOGOUT = 'LOGOUT';
 const GET_USER = 'GET_USER';
@@ -138,8 +135,6 @@ const updateUserFB = (nick_name) => {
       .then(() => {
         console.log('닉네임 변경에 성공했습니다.');
 
-        dispatch(updateUser(new_user));
-
         // 사용자 닉네임 수정 후 작성한 댓글에도 적용
         const commentDB = firestore.collection('comment');
 
@@ -147,7 +142,7 @@ const updateUserFB = (nick_name) => {
           .where('user_id', '==', user_info.uid)
           .get()
           .then((snapshot) => {
-            snapshot.forEach((doc) => {
+            snapshot?.forEach((doc) => {
               commentDB
                 .doc(doc.id)
                 .update({ user_name: nick_name })
@@ -178,7 +173,7 @@ const updateUserFB = (nick_name) => {
           .where('user_id', '==', user_info.uid)
           .get()
           .then((snapshot) => {
-            snapshot.forEach((doc) => {
+            snapshot?.forEach((doc) => {
               postDB
                 .doc(doc.id)
                 .update({ user_name: nick_name })
@@ -201,38 +196,40 @@ const updateUserFB = (nick_name) => {
               error,
             );
           });
+
+        // 사용자 닉네임 수정 후 알림에도 적용
+        realtime
+          .ref(`notice`)
+          .once('value')
+          .then((snapshot) => {
+            const user = snapshot?.val();
+            const user_id = Object.keys(user);
+            // console.log(user_id);
+
+            for (let i = 0; i < user_id.length; i++) {
+              realtime
+                .ref(`notice/${user_id[i]}/list`)
+                .once('value')
+                .then((snap) => {
+                  const comments = snap?.val();
+                  const comments_id = Object.keys(comments);
+                  // console.log(comments_id);
+
+                  comments_id.forEach((id) => {
+                    if (user_info.nick_name === comments[id].user_name) {
+                      realtime.ref(`notice/${user_id[i]}/list/${id}`).update({
+                        user_name: nick_name,
+                      });
+                    }
+                  });
+                });
+            }
+          });
+
+        dispatch(updateUser(new_user));
       })
       .catch((error) => {
         console.log('닉네임 변경에 실패했습니다.', error);
-      });
-
-    // 사용자 닉네임 수정 후 알림에도 적용
-    realtime
-      .ref(`notice`)
-      .once('value')
-      .then((snapshot) => {
-        const user = snapshot.val();
-        const user_id = Object.keys(user);
-        // console.log(user_id);
-
-        for (let i = 0; i < user_id.length; i++) {
-          realtime
-            .ref(`notice/${user_id[i]}/list`)
-            .once('value')
-            .then((snap) => {
-              const comments = snap.val();
-              const comments_id = Object.keys(comments);
-              // console.log(comments_id);
-
-              comments_id.forEach((id) => {
-                if (user_info.nick_name === comments[id].user_name) {
-                  realtime.ref(`notice/${user_id[i]}/list/${id}`).update({
-                    user_name: nick_name,
-                  });
-                }
-              });
-            });
-        }
       });
   };
 };

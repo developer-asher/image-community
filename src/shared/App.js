@@ -62,18 +62,18 @@ function App() {
       </Grid>
       {/* 로그인 된 상태에서 post, detail, main 페이지에서만 게시글 추가 버튼 보이기 */}
       <Permit>
-        {path_name === '/' ||
-        path_name === '/detail' ||
-        path_name === '/notice' ? (
+        {path_name === '/signin' ||
+        path_name === '/signup' ||
+        path_name === '/user' ? (
+          <></>
+        ) : (
           <Button
             padding='0px'
             bg='transparent'
-            onClick={() => history.replace('/write')}
+            onClick={() => history.push('/write')}
           >
             <AddCircleIcon style={addBtnStyles} />
           </Button>
-        ) : (
-          <></>
         )}
       </Permit>
     </Container>

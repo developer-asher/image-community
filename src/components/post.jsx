@@ -79,13 +79,15 @@ const Post = memo((props) => {
 
   useEffect(() => {
     // 최초 한 번 유저의 좋아요 클릭 상태 가져옴
-    const notiDB = realtime.ref(`like`)?.child(id)?.child(nick_name);
+    if (nick_name) {
+      const notiDB = realtime.ref(`like/`)?.child(id)?.child(nick_name);
 
-    notiDB.once('value', (snapshot) => {
-      if (snapshot.val() !== null) {
-        setIsClicked(!is_clicked);
-      }
-    });
+      notiDB.once('value', (snapshot) => {
+        if (snapshot.val()) {
+          setIsClicked(!is_clicked);
+        }
+      });
+    }
   }, []);
 
   return (

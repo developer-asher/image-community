@@ -12,7 +12,6 @@ const PostList = (props) => {
   const user_info = useSelector((state) => state.user.user);
   const paging = useSelector((state) => state.post.paging);
   const loading_post = useSelector((state) => state.post.loading_post);
-  const { history } = props;
 
   useEffect(() => {
     dispatch(postActions.getPostFB());

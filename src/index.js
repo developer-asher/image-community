@@ -24,4 +24,4 @@ function sendToAnalytics(metric) {
   console.log({ report });
 }
 
-reportWebVitals(sendToAnalytics);
+// reportWebVitals(sendToAnalytics);

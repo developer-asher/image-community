@@ -87,6 +87,7 @@ const addCommentFB = (post_id, contents) => {
                 }),
               );
 
+              // 작성자가 달은 댓글 list
               const noti_item = realtime
                 .ref(`notice/${post.user_info.user_id}/list`)
                 .push();

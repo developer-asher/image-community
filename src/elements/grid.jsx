@@ -12,6 +12,7 @@ const Grid = (props) => {
     padding,
     bg,
     children,
+    cursor,
     onClick,
   } = props;
   const styles = {
@@ -23,7 +24,9 @@ const Grid = (props) => {
     margin,
     padding,
     bg,
+    cursor,
   };
+
   return (
     <GridBox {...styles} onClick={onClick}>
       {children}
@@ -39,6 +42,7 @@ Grid.defaultProps = {
   padding: false,
   bg: false,
   children: null,
+  cursor: null,
 };
 
 // 여기 props는 GridBox 안에서 받은 props 즉, {...styles}가 넘어온다.
@@ -54,6 +58,7 @@ const GridBox = styled.div`
   ${(props) => (props.margin ? `margin: ${props.margin};` : '')}
   ${(props) => (props.padding ? `padding: ${props.padding};` : '')}
   ${(props) => (props.bg ? `background-color: ${props.bg};` : '')}
+  ${(props) => (props.cursor ? `cursor: ${props.cursor};` : '')}
 `;
 
 export default Grid;

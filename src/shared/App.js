@@ -81,9 +81,11 @@ function App() {
 }
 
 const Container = styled.div`
+  padding: 20px;
   position: relative;
   max-height: 100%;
   border-radius: 10px;
+  background-color: #eee;
 `;
 
 export default App;

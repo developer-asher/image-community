@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import { Grid, Input, Text, Button } from '../elements/index';
 import { actionCreators as userActions } from '../redux/modules/user';
@@ -17,8 +18,16 @@ const SignIn = (props) => {
     dispatch(userActions.loginFB(id, pwd));
   };
 
+  const changeId = (e) => setId(e.target.value);
+  const changePwd = (e) => setPwd(e.target.value);
+  const keyPressLogin = (e) => {
+    if (e.key === 'Enter' && id) {
+      login();
+    }
+  };
+
   return (
-    <>
+    <Grid padding='20px' bg='#fff'>
       <Text size='30px' bold margin='0 0 30px 0'>
         로그인
       </Text>
@@ -28,7 +37,7 @@ const SignIn = (props) => {
             value={id}
             label='아이디'
             placeholder='Id'
-            onChange={(e) => setId(e.target.value)}
+            onChange={changeId}
           />
         </Grid>
         <Grid>
@@ -37,20 +46,21 @@ const SignIn = (props) => {
             type='password'
             label='비밀번호'
             placeholder='Password'
-            onChange={(e) => setPwd(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' && id) {
-                login();
-              }
-            }}
+            onChange={changePwd}
+            onKeyPress={keyPressLogin}
           />
         </Grid>
       </Grid>
-      <div style={{ textAlign: 'center', marginTop: '40px' }}>
+      <ButtonWrap>
         <Button onClick={login}>로그인하기</Button>
-      </div>
-    </>
+      </ButtonWrap>
+    </Grid>
   );
 };
+
+const ButtonWrap = styled.div`
+  margin-top: 40px;
+  text-align: center;
+`;
 
 export default SignIn;

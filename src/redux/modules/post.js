@@ -4,7 +4,6 @@ import moment from 'moment';
 
 import { firestore, storage } from '../../shared/firebase';
 import { actionCreators as imageActions } from './image';
-import { ConstructionOutlined } from '@mui/icons-material';
 
 const SET_POST = 'SET_POST';
 const ADD_POST = 'ADD_POST';

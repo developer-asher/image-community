@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import { Grid, Input, Text, Button } from '../elements/index';
 import { actionCreators } from '../redux/modules/user';
@@ -12,7 +13,7 @@ const SignUp = (props) => {
   const [pwd_check, setPwdCheck] = useState();
 
   const validateEmail = (email) => {
-    var re =
+    const re =
       /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return re.test(email);
   };
@@ -39,8 +40,13 @@ const SignUp = (props) => {
     dispatch(actionCreators.signupFB(id, pwd, nick_name));
   };
 
+  const changeId = (e) => setId(e.target.value);
+  const changeName = (e) => setNickName(e.target.value);
+  const changePwd = (e) => setPwd(e.target.value);
+  const changePwdCheck = (e) => setPwdCheck(e.target.value);
+
   return (
-    <>
+    <Grid padding='20px' bg='#fff'>
       <Text size='30px' bold margin='0 0 30px 0'>
         로그인
       </Text>
@@ -50,14 +56,15 @@ const SignUp = (props) => {
             value={id}
             label='아이디'
             placeholder='아이디를 입력하세요'
-            onChange={(e) => setId(e.target.value)}
+            onChange={changeId}
           />
         </Grid>
-        <Grid value={nick_name} margin='0 0 20px 0'>
+        <Grid margin='0 0 20px 0'>
           <Input
+            value={nick_name}
             label='닉네임'
             placeholder='닉네임을 입력하세요'
-            onChange={(e) => setNickName(e.target.value)}
+            onChange={changeName}
           />
         </Grid>
         <Grid margin='0 0 20px 0'>
@@ -66,7 +73,7 @@ const SignUp = (props) => {
             type='password'
             label='비밀번호'
             placeholder='비밀번호를 입력하세요'
-            onChange={(e) => setPwd(e.target.value)}
+            onChange={changePwd}
           />
         </Grid>
         <Grid>
@@ -75,15 +82,20 @@ const SignUp = (props) => {
             type='password'
             label='비밀번호 확인'
             placeholder='비밀번호를 다시 입력하세요 '
-            onChange={(e) => setPwdCheck(e.target.value)}
+            onChange={changePwdCheck}
           />
         </Grid>
       </Grid>
-      <div style={{ textAlign: 'center', marginTop: '40px' }}>
+      <ButtonWrap>
         <Button onClick={signUp}>회원가입하기</Button>
-      </div>
-    </>
+      </ButtonWrap>
+    </Grid>
   );
 };
+
+const ButtonWrap = styled.div`
+  margin-top: 40px;
+  text-align: center;
+`;
 
 export default SignUp;

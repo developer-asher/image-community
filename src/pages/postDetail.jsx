@@ -24,7 +24,7 @@ const PostDetail = (props) => {
   }, []);
 
   return (
-    <Grid padding='20px'>
+    <Grid>
       {post && (
         <Post {...post} is_me={post.user_info.user_id === user_info?.uid} />
       )}

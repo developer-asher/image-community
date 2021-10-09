@@ -8,16 +8,18 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Grid, Image, Text, Button } from '../elements/index';
 import { history } from '../redux/configureStore';
 import { realtime } from '../shared/firebase';
+import AniOpacity from './aniOpacity';
 
 const Post = memo((props) => {
   const { user_info, id, contents, image_url, comment_cnt, insert_dt, is_me } =
     props;
   const param = useParams();
-  const likeIcon = useRef();
   const is_login = useSelector((state) => state.user.is_login);
   const nick_name = useSelector((state) => state?.user?.user?.nick_name);
   const [liked, setLiked] = useState(0);
   const [is_like, setIsLike] = useState(true);
+  const [active, setActive] = useState(false);
+  const [is_clicked, setIsClicked] = useState(false);
 
   const editPost = () => {
     history.push(`/write/${id}`);
@@ -49,11 +51,15 @@ const Post = memo((props) => {
         notiDB.set({ count: like }); //좋아요
       }
 
-      setIsLike(!like);
+      setIsLike(!like); // 좋아요 구분자
     }
+
+    setIsClicked(!is_clicked); // 좋아요 클릭 유지(view) 구분자
+    setActive(!active); // 좋아요 클릭 시 애니애미션 작동 구분자
   };
 
   useEffect(() => {
+    // 좋아요 클릭 시 counting
     const notiDB = realtime.ref(`like/${id}`);
 
     notiDB.on('value', (snapshot) => {
@@ -67,7 +73,20 @@ const Post = memo((props) => {
 
       setLiked(count);
     });
+
+    return () => notiDB.off();
   }, [liked]);
+
+  useEffect(() => {
+    // 최초 한 번 유저의 좋아요 클릭 상태 가져옴
+    const notiDB = realtime.ref(`like`)?.child(id)?.child(nick_name);
+
+    notiDB.once('value', (snapshot) => {
+      if (snapshot.val() !== null) {
+        setIsClicked(!is_clicked);
+      }
+    });
+  }, []);
 
   return (
     <Grid margin='20px 0 0 0' padding='20px' bg='#fff'>
@@ -94,20 +113,9 @@ const Post = memo((props) => {
       <Grid>
         <Grid position='relative' cursor='pointer' onClick={goDetail}>
           <Image shape='rectangle' src={image_url} />
-          <FavoriteIcon
-            ref={likeIcon}
-            style={{
-              display: 'none',
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              fontSize: '40px',
-              color: 'pink',
-              transform: 'translateX(-50%) translateY(-50%)',
-              opacity: '0',
-              transition: 'all 0.3s ease-in',
-            }}
-          />
+          <AniOpacity active={active}>
+            <FavoriteIcon style={{ fontSize: '60px' }} />
+          </AniOpacity>
         </Grid>
 
         <Grid is_flex content_pos='flex-start' margin='5px 0 0 0'>
@@ -125,7 +133,11 @@ const Post = memo((props) => {
             cursor='pointer'
             onClick={clickLike}
           >
-            <FavoriteBorderIcon style={{ fontSize: '15px' }} />
+            {is_clicked ? (
+              <FavoriteIcon style={{ fontSize: '15px' }} />
+            ) : (
+              <FavoriteBorderIcon style={{ fontSize: '15px' }} />
+            )}
             <span style={{ fontSize: '14px' }}>{liked}</span>
           </Grid>
         </Grid>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -26,7 +26,11 @@ const Header = (props) => {
 
   const goNotice = () => {
     if (is_login) {
-      history.push('/notice');
+      if (history.location.pathname === '/notice') {
+        history.push('/');
+      } else {
+        history.push('/notice');
+      }
     }
   };
 

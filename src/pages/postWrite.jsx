@@ -82,7 +82,9 @@ const PostWrite = (props) => {
         <Image
           shape='rectangle'
           src={
-            preview_image ? preview_image : 'http://via.placeholder.com/400x300'
+            preview_image && is_edit
+              ? preview_image
+              : 'http://via.placeholder.com/400x300'
           }
         />
       </Grid>
